@@ -1,7 +1,9 @@
 # 디자인 토큰
 
-모든 토큰은 `src/App.css`의 `@theme {}` 블록에 CSS 변수로 정의되어 있으며, Figma 파일(`4rJmEFUU2HMWVy3qUcYZRs`)에서 추출한 값 기반입니다.
+모든 토큰은 `src/App.css`의 `@theme {}` 블록에 CSS 변수로 정의되어 있습니다.
 Tailwind CSS v4 유틸리티 클래스로 바로 사용 가능합니다.
+
+> **브랜드 컨셉:** 클린하우스 — 청결·신뢰·상쾌함을 표현하는 시안 블루 계열
 
 ---
 
@@ -9,18 +11,20 @@ Tailwind CSS v4 유틸리티 클래스로 바로 사용 가능합니다.
 
 ### Brand Primary
 
+시안 블루 계열 — 청결함·신뢰감·상쾌함을 표현합니다.
+
 | 토큰          | 값            | Tailwind 클래스           |
 | ------------- | ------------- | ------------------------- |
-| `primary-50`  | `#f2effd`     | `bg-primary-50`           |
-| `primary-100` | `#ede6ff`     | `bg-primary-100`          |
-| `primary-200` | `#d7cbf7`     | `bg-primary-200`          |
-| `primary-300` | `#b69cf1`     | `bg-primary-300`          |
-| `primary-400` | `#986be9`     | `bg-primary-400`          |
-| `primary-500` | `#7c35d9`     | `bg-primary-500`          |
-| **`primary`** | **`#6201e0`** | **`bg-primary`** (기본값) |
-| `primary-700` | `#5601c9`     | `bg-primary-700`          |
-| `primary-800` | `#4e01b3`     | `bg-primary-800`          |
-| `accent`      | `#aa3bff`     | `bg-accent`               |
+| `primary-50`  | `#f0f9ff`     | `bg-primary-50`           |
+| `primary-100` | `#e0f2fe`     | `bg-primary-100`          |
+| `primary-200` | `#bae6fd`     | `bg-primary-200`          |
+| `primary-300` | `#7dd3fc`     | `bg-primary-300`          |
+| `primary-400` | `#38bdf8`     | `bg-primary-400`          |
+| `primary-500` | `#0ea5e9`     | `bg-primary-500`          |
+| **`primary`** | **`#0284c7`** | **`bg-primary`** (기본값) |
+| `primary-700` | `#0369a1`     | `bg-primary-700`          |
+| `primary-800` | `#075985`     | `bg-primary-800`          |
+| `accent`      | `#06b6d4`     | `bg-accent`               |
 
 ### Neutral / Gray
 
@@ -46,13 +50,13 @@ Tailwind CSS v4 유틸리티 클래스로 바로 사용 가능합니다.
 | `bg-base`       | `#ffffff`              | `bg-bg-base`           |
 | `bg-subtle`     | `#fafafb`              | `bg-bg-subtle`         |
 | `bg-muted`      | `#f5f5f5`              | `bg-bg-muted`          |
-| `bg-accent`     | `rgba(170,59,255,0.1)` | `bg-bg-accent`         |
+| `bg-accent`     | `rgba(6,182,212,0.1)`  | `bg-bg-accent`         |
 | `text-heading`  | `#121212`              | `text-text-heading`    |
 | `text-body`     | `#666666`              | `text-text-body`       |
 | `text-muted`    | `#a6a6a6`              | `text-text-muted`      |
 | `text-inverse`  | `#ffffff`              | `text-text-inverse`    |
 | `border-base`   | `#dddddd`              | `border-border-base`   |
-| `border-accent` | `rgba(170,59,255,0.5)` | `border-border-accent` |
+| `border-accent` | `rgba(6,182,212,0.5)`  | `border-border-accent` |
 
 ### 상태 (Status)
 

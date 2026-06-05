@@ -2,6 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 서비스 개요
+
+- **서비스명:** 클린하우스
+- **서비스 유형:** 청소 서비스 플랫폼 (정기청소 · 입주청소 · 특수청소)
+- **브랜드 컨셉:** 신뢰감 있는 청결함 — 시안 블루 계열 (#0284c7)
+
 ## 명령어
 
 - **개발 서버:** `pnpm dev` (Vite, http://localhost:5173)
@@ -87,7 +93,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **참고 문서 : `docs/convention/DESIGN_TOKENS.md`**
 
-모든 디자인 토큰(색상, 간격, 타이포그래피, 라운드, 그림자)은 `src/App.css`의 `@theme {}` 블록에 Tailwind v4 CSS 테마 변수로 정의되어 있으며, Figma에서 추출한 값 기반. Tailwind 유틸리티 클래스로 사용 (예: `text-primary`, `bg-gray-100`, `rounded-lg`).
+모든 디자인 토큰(색상, 간격, 타이포그래피, 라운드, 그림자)은 `src/App.css`의 `@theme {}` 블록에 Tailwind v4 CSS 테마 변수로 정의되어 있음. Tailwind 유틸리티 클래스로 사용 (예: `text-primary`, `bg-gray-100`, `rounded-lg`). 상세 토큰 목록은 `docs/convention/DESIGN_TOKENS.md` 참조.
 
 ### 상태 관리 패턴
 
