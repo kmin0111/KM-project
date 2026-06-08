@@ -4,4 +4,5 @@ export const ROUTES = {
   REVIEWS: '/reviews',
   LOGIN: '/login',
   SIGNUP: '/signup',
+  MYPAGE: '/mypage',
 } as const;

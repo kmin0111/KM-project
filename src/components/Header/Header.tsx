@@ -1,7 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
+import { useAuthStore } from '@/stores/authStore';
 
 export function Header() {
+  const navigate = useNavigate();
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  const logout = useAuthStore((s) => s.logout);
+
+  function handleLogout() {
+    logout();
+    navigate(ROUTES.HOME);
+  }
+
   return (
     <header className="border-b border-border-base bg-bg-base">
       <div className="max-w-container mx-auto px-6 h-[60px] flex items-center justify-between">
@@ -21,18 +31,38 @@ export function Header() {
           >
             고객후기
           </Link>
-          <Link
-            to={ROUTES.LOGIN}
-            className="text-sm text-gray-600 no-underline hover:text-text-heading transition-colors"
-          >
-            로그인
-          </Link>
-          <Link
-            to={ROUTES.SIGNUP}
-            className="bg-primary text-text-inverse no-underline px-[18px] py-2 rounded-md text-sm font-semibold hover:bg-primary-700 transition-colors"
-          >
-            회원가입
-          </Link>
+          {isLoggedIn ? (
+            <>
+              <Link
+                to={ROUTES.MYPAGE}
+                className="text-sm text-gray-600 no-underline hover:text-text-heading transition-colors"
+              >
+                마이페이지
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="bg-primary text-text-inverse px-[18px] py-2 rounded-md text-sm font-semibold hover:bg-primary-700 transition-colors cursor-pointer border-none"
+              >
+                로그아웃
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to={ROUTES.LOGIN}
+                className="text-sm text-gray-600 no-underline hover:text-text-heading transition-colors"
+              >
+                로그인
+              </Link>
+              <Link
+                to={ROUTES.SIGNUP}
+                className="bg-primary text-text-inverse no-underline px-[18px] py-2 rounded-md text-sm font-semibold hover:bg-primary-700 transition-colors"
+              >
+                회원가입
+              </Link>
+            </>
+          )}
         </nav>
       </div>
     </header>
