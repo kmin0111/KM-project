@@ -1,8 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { DefaultLayout } from '@/layouts/DefaultLayout';
 import { AuthLayout } from '@/layouts/AuthLayout';
 import { MainPage } from '@/pages/MainPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { SignupPage } from '@/pages/signup';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { ROUTES } from '@/constants/routes';
 
@@ -15,7 +16,8 @@ export function RouterProvider() {
         </Route>
         <Route element={<AuthLayout />}>
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-          <Route path={ROUTES.SIGNUP} element={<NotFoundPage />} />
+          <Route path={ROUTES.SIGNUP} element={<Navigate to={ROUTES.SIGNUP_GENERAL} replace />} />
+          <Route path={ROUTES.SIGNUP_GENERAL} element={<SignupPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

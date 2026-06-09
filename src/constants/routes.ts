@@ -4,5 +4,6 @@ export const ROUTES = {
   REVIEWS: '/reviews',
   LOGIN: '/login',
   SIGNUP: '/signup',
+  SIGNUP_GENERAL: '/signup/general',
   MYPAGE: '/mypage',
 } as const;
