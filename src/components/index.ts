@@ -5,3 +5,4 @@ export { ReviewSection } from './ReviewSection';
 export { Button } from './common/Button';
 export { Input } from './common/Input';
 export { PasswordInput } from './common/PasswordInput';
+export { Stars } from './common/Stars';

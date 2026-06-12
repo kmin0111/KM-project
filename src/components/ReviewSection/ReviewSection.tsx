@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
+import { Stars } from '@/components';
 
 const REVIEWS = [
   {
@@ -27,26 +28,6 @@ const REVIEWS = [
     count: 5,
   },
 ];
-
-function Stars({ rating }: { rating: number }) {
-  return (
-    <div
-      className="flex gap-0.5"
-      role="img"
-      aria-label={`별점 5점 중 ${rating}점`}
-    >
-      {Array.from({ length: 5 }, (_, i) => (
-        <span
-          key={i}
-          aria-hidden="true"
-          className={`text-base ${i < rating ? 'text-warning' : 'text-gray-300'}`}
-        >
-          ★
-        </span>
-      ))}
-    </div>
-  );
-}
 
 export function ReviewSection() {
   return (
