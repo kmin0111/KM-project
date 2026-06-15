@@ -13,7 +13,8 @@ src/features/
 ├── qna/             # 질의응답/답변 (11개)
 ├── exams/           # 쪽지시험 (6개)
 ├── chatbot/         # 챗봇 (4개)
-└── course/          # 과정 정보 (1개)
+├── course/          # 과정 정보 (1개)
+└── reviews/         # 청소 후기 (2개)
 ```
 
 ## 도메인별 상세
@@ -97,6 +98,20 @@ src/features/
 | list/    | `/api/v1/course`                     | GET    |
 | cohorts/ | `api/v1/courses/{course_id}/cohorts` | GET    |
 
+### reviews/ — 청소 후기
+
+| 폴더    | API                              | 메서드                |
+| ------- | -------------------------------- | --------------------- |
+| list/   | `/api/v1/reviews`                | GET                   |
+| detail/ | `/api/v1/reviews/{id}`           | GET, DELETE           |
+| detail/ | `/api/v1/reviews/{id}/reply`     | POST, PUT, DELETE     |
+
+**권한 요약:**
+
+- 후기 목록/상세 조회 — 전체 접근 가능
+- 후기 삭제 (`DELETE /api/v1/reviews/{id}`) — USER 권한 (작성자 본인)
+- 답글 작성/수정/삭제 (`POST/PUT/DELETE /api/v1/reviews/{id}/reply`) — OWNER 권한
+
 ## 각 폴더 내부 구조
 
 ```
@@ -135,4 +150,6 @@ feature-name/
 | CommunityListPage   | posts/list, posts/categories, posts/search                                                                                  |
 | CommunityDetailPage | posts/detail, posts/comments, posts/like, posts/delete                                                                      |
 | CommunityWritePage  | posts/write, posts/categories                                                                                               |
+| ReviewListPage      | reviews/list                                                                                                                |
+| ReviewDetailPage    | reviews/detail                                                                                                              |
 | 챗봇 위젯           | chatbot/sessions, chatbot/completions, chatbot/support                                                                      |

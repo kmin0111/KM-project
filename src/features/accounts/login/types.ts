@@ -8,6 +8,8 @@ export interface LoginRequest {
   password: string;
 }
 
+export type UserRole = 'USER' | 'OWNER' | 'ADMIN';
+
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
@@ -15,6 +17,7 @@ export interface LoginResponse {
     id: number;
     email: string;
     nickname?: string;
+    role: UserRole;
   };
 }
 

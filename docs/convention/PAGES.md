@@ -11,6 +11,7 @@ src/pages/
 ├── quiz/            # 쪽지시험
 ├── qna/             # 질의응답
 ├── community/       # 커뮤니티
+├── reviews/         # 청소 후기
 └── ComponentShowcase.tsx  # 컴포넌트 데모 (개발용)
 ```
 
@@ -76,6 +77,13 @@ src/pages/
 | CommunityWritePage.tsx  | `/community/write`        | 게시글 작성 |
 | CommunityDetailPage.tsx | `/community/:postId`      | 게시글 상세 |
 | CommunityEditPage.tsx   | `/community/:postId/edit` | 게시글 수정 |
+
+### reviews/
+
+| 파일                 | 라우트          | 설명                                                                              |
+| -------------------- | --------------- | --------------------------------------------------------------------------------- |
+| ReviewListPage.tsx   | `/reviews`      | 청소 후기 목록 (서비스 타입 필터, 정렬, 페이지네이션)                             |
+| ReviewDetailPage.tsx | `/reviews/:id`  | 후기 상세 (항목별 평점, 전/후 사진 갤러리, 사장님 답글, 본인/OWNER용 액션 버튼) |
 
 ## 모달로 처리되는 화면
 
