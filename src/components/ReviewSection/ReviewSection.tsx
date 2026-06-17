@@ -67,7 +67,7 @@ export function ReviewSection() {
         <div className="border border-border-base rounded-lg p-4 text-center text-[15px] text-gray-600">
           전체 평균 &nbsp;•&nbsp;{' '}
           <strong className="text-lg text-text-heading">4.8</strong>
-          &nbsp; (128건)
+          &nbsp; (30건)
         </div>
       </div>
     </section>

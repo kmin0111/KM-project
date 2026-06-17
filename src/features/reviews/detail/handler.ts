@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { MOCK_REVIEWS } from '../list/mockData';
+import { mockReviewStore } from '../shared/mockStore';
 import type {
   CreateReplyRequest,
   OwnerReply,
@@ -39,29 +40,6 @@ function buildAuthorId(reviewId: number): number {
   return 200 + reviewId;
 }
 
-const ownerReplies = new Map<number, OwnerReply>([
-  [
-    1,
-    {
-      id: 1,
-      content:
-        '소중한 후기 감사합니다! 앞으로도 변함없는 서비스로 보답드리겠습니다.',
-      createdAt: '2025-05-21',
-    },
-  ],
-  [
-    3,
-    {
-      id: 2,
-      content: '만족스러운 서비스를 제공해드릴 수 있어 기쁩니다. 감사합니다!',
-      createdAt: '2025-05-16',
-    },
-  ],
-]);
-
-let nextReplyId = 100;
-const deletedReviews = new Set<number>();
-
 function requireAuth(request: Request) {
   const auth = request.headers.get('Authorization');
   if (!auth) {
@@ -76,27 +54,49 @@ function requireAuth(request: Request) {
 export const reviewDetailHandlers = [
   http.get('/api/v1/reviews/:id', ({ params }) => {
     const id = Number(params.id);
-    if (deletedReviews.has(id)) {
+    if (mockReviewStore.isDeleted(id)) {
       return HttpResponse.json({ message: '존재하지 않는 후기입니다.' }, { status: 404 });
     }
 
+    // 1) 사용자가 작성한 후기를 우선 조회
+    const created = mockReviewStore.findCreatedReview(id);
+    if (created) {
+      const detail: ReviewDetail = {
+        id: created.id,
+        type: created.type,
+        rating: created.rating,
+        ratingBreakdown: created.ratingBreakdown,
+        content: created.content,
+        author: created.author,
+        authorId: created.authorId,
+        useCount: created.useCount,
+        createdAt: created.createdAt,
+        photos: created.photos,
+        ownerReply: mockReviewStore.getReply(id),
+      };
+      return HttpResponse.json(detail);
+    }
+
+    // 2) 기본 mock 데이터에서 조회 (수정 patch 반영)
     const base = MOCK_REVIEWS.find((r) => r.id === id);
     if (!base) {
       return HttpResponse.json({ message: '존재하지 않는 후기입니다.' }, { status: 404 });
     }
 
+    const patch = mockReviewStore.getUpdate(id);
+
     const detail: ReviewDetail = {
       id: base.id,
-      type: base.type,
-      rating: base.rating,
-      ratingBreakdown: buildBreakdown(base.rating),
-      content: base.content,
+      type: patch?.type ?? base.type,
+      rating: patch?.rating ?? base.rating,
+      ratingBreakdown: patch?.ratingBreakdown ?? buildBreakdown(base.rating),
+      content: patch?.content ?? base.content,
       author: base.author,
       authorId: buildAuthorId(base.id),
       useCount: base.useCount,
       createdAt: base.createdAt,
-      photos: buildPhotos(base.id),
-      ownerReply: ownerReplies.get(id),
+      photos: patch?.photos ?? buildPhotos(base.id),
+      ownerReply: mockReviewStore.getReply(id),
     };
 
     return HttpResponse.json(detail);
@@ -107,8 +107,7 @@ export const reviewDetailHandlers = [
     if (unauthorized) return unauthorized;
 
     const id = Number(params.id);
-    deletedReviews.add(id);
-    ownerReplies.delete(id);
+    mockReviewStore.markDeleted(id);
     return new HttpResponse(null, { status: 204 });
   }),
 
@@ -120,11 +119,11 @@ export const reviewDetailHandlers = [
     const body = (await request.json()) as CreateReplyRequest;
     const now = new Date().toISOString().slice(0, 10);
     const reply: OwnerReply = {
-      id: nextReplyId++,
+      id: mockReviewStore.takeNextReplyId(),
       content: body.content,
       createdAt: now,
     };
-    ownerReplies.set(id, reply);
+    mockReviewStore.setReply(id, reply);
     return HttpResponse.json(reply, { status: 201 });
   }),
 
@@ -134,7 +133,7 @@ export const reviewDetailHandlers = [
 
     const id = Number(params.id);
     const body = (await request.json()) as UpdateReplyRequest;
-    const existing = ownerReplies.get(id);
+    const existing = mockReviewStore.getReply(id);
     if (!existing) {
       return HttpResponse.json({ message: '답글이 존재하지 않습니다.' }, { status: 404 });
     }
@@ -144,7 +143,7 @@ export const reviewDetailHandlers = [
       content: body.content,
       updatedAt: now,
     };
-    ownerReplies.set(id, updated);
+    mockReviewStore.setReply(id, updated);
     return HttpResponse.json(updated);
   }),
 
@@ -153,7 +152,7 @@ export const reviewDetailHandlers = [
     if (unauthorized) return unauthorized;
 
     const id = Number(params.id);
-    ownerReplies.delete(id);
+    mockReviewStore.deleteReply(id);
     return new HttpResponse(null, { status: 204 });
   }),
 ];

@@ -1,9 +1,43 @@
 import { http, HttpResponse } from 'msw';
+import { mockReviewStore } from '../shared/mockStore';
 import { MOCK_REVIEWS } from './mockData';
-import type { ReviewListResponse, ReviewServiceType, ReviewSort } from './types';
+import type { Review, ReviewListResponse, ReviewServiceType, ReviewSort } from './types';
 
 const SERVICE_TYPES: ReviewServiceType[] = ['정기청소', '입주청소', '특수청소'];
 const SORT_TYPES: ReviewSort[] = ['latest', 'rating'];
+
+/**
+ * 기본 mockData와 사용자가 작성/수정/삭제한 후기를 합쳐 최종 목록을 만든다.
+ * - 새로 작성된 후기는 최상단에 노출
+ * - 수정된 후기는 patch를 반영
+ * - 삭제된 후기는 제외
+ */
+function buildReviewList(): Review[] {
+  const created = mockReviewStore.getCreatedReviews().map<Review>((r) => ({
+    id: r.id,
+    type: r.type,
+    rating: r.rating,
+    content: r.content,
+    author: r.author,
+    useCount: r.useCount,
+    createdAt: r.createdAt,
+  }));
+
+  const base = MOCK_REVIEWS
+    .filter((r) => !mockReviewStore.isDeleted(r.id))
+    .map<Review>((r) => {
+      const patch = mockReviewStore.getUpdate(r.id);
+      if (!patch) return r;
+      return {
+        ...r,
+        type: patch.type ?? r.type,
+        rating: patch.rating ?? r.rating,
+        content: patch.content ?? r.content,
+      };
+    });
+
+  return [...created, ...base];
+}
 
 export const reviewListHandlers = [
   http.get('/api/v1/reviews', ({ request }) => {
@@ -23,7 +57,7 @@ export const reviewListHandlers = [
       ? (rawSort as ReviewSort)
       : 'latest';
 
-    let filtered = [...MOCK_REVIEWS];
+    let filtered = buildReviewList();
     if (type) {
       filtered = filtered.filter((review) => review.type === type);
     }

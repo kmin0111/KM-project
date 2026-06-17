@@ -12,11 +12,14 @@ import type {
   UpdateReplyRequest,
 } from './types';
 
+const REVIEW_DETAIL_STALE_TIME = 60_000;
+
 export const reviewDetailOptions = (id: number) =>
   queryOptions({
     queryKey: ['reviews', 'detail', id] as const,
     queryFn: () =>
       instance.get<ReviewDetail>(`/api/v1/reviews/${id}`).then((r) => r.data),
+    staleTime: REVIEW_DETAIL_STALE_TIME,
   });
 
 export function useReviewDetail(id: number) {
@@ -32,7 +35,6 @@ export function useDeleteReview() {
       queryClient.removeQueries({ queryKey: ['reviews', 'detail', id] });
       queryClient.invalidateQueries({ queryKey: ['reviews', 'list'] });
     },
-    onError: () => alert('요청에 실패했습니다. 다시 시도해주세요.'),
   });
 }
 
@@ -46,7 +48,6 @@ export function useCreateOwnerReply(reviewId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reviews', 'detail', reviewId] });
     },
-    onError: () => alert('요청에 실패했습니다. 다시 시도해주세요.'),
   });
 }
 
@@ -60,7 +61,6 @@ export function useUpdateOwnerReply(reviewId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reviews', 'detail', reviewId] });
     },
-    onError: () => alert('요청에 실패했습니다. 다시 시도해주세요.'),
   });
 }
 
@@ -72,6 +72,5 @@ export function useDeleteOwnerReply(reviewId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reviews', 'detail', reviewId] });
     },
-    onError: () => alert('요청에 실패했습니다. 다시 시도해주세요.'),
   });
 }

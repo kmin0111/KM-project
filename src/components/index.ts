@@ -6,3 +6,6 @@ export { Button } from './common/Button';
 export { Input } from './common/Input';
 export { PasswordInput } from './common/PasswordInput';
 export { Stars } from './common/Stars';
+export { StarRating } from './reviews/StarRating';
+export { PhotoPreview } from './reviews/PhotoPreview';
+export { PhotoAddButton } from './reviews/PhotoAddButton';
