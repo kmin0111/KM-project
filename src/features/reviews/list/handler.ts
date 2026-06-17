@@ -19,6 +19,7 @@ function buildReviewList(): Review[] {
     rating: r.rating,
     content: r.content,
     author: r.author,
+    authorId: r.authorId,
     useCount: r.useCount,
     createdAt: r.createdAt,
   }));
@@ -57,9 +58,15 @@ export const reviewListHandlers = [
       ? (rawSort as ReviewSort)
       : 'latest';
 
+    const rawAuthorId = url.searchParams.get('authorId');
+    const authorId = rawAuthorId ? Number(rawAuthorId) : null;
+
     let filtered = buildReviewList();
     if (type) {
       filtered = filtered.filter((review) => review.type === type);
+    }
+    if (authorId) {
+      filtered = filtered.filter((review) => review.authorId === authorId);
     }
 
     if (sort === 'rating') {

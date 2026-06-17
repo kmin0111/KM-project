@@ -17,11 +17,6 @@ interface ProcessStep {
   description: string;
 }
 
-interface StatItem {
-  label: string;
-  value: string;
-  unit: string;
-}
 
 const SERVICES: ServiceItem[] = [
   {

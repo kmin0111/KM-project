@@ -8,6 +8,7 @@ export interface Review {
   rating: number;
   content: string;
   author: string;
+  authorId: number;
   useCount: number;
   createdAt: string;
 }
@@ -17,6 +18,7 @@ export interface ReviewListParams {
   size: number;
   type?: ReviewServiceType;
   sort: ReviewSort;
+  authorId?: number;
 }
 
 export interface ReviewListResponse {

@@ -9,4 +9,6 @@ export const ROUTES = {
   SIGNUP: '/signup',
   SIGNUP_GENERAL: '/signup/general',
   MYPAGE: '/mypage',
+  MYPAGE_EDIT: '/mypage/edit',
+  MYPAGE_CHANGE_PASSWORD: '/mypage/change-password',
 } as const;

@@ -47,7 +47,8 @@ export const loginHandlers = [
     }
 
     const successBody: LoginResponse = {
-      accessToken: 'mock-access-token',
+      accessToken:
+        account.role === 'OWNER' ? 'mock-owner-token' : 'mock-access-token',
       refreshToken: 'mock-refresh-token',
       user: {
         id: account.id,

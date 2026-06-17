@@ -1,0 +1,1 @@
+export { MypageLayout } from './MypageLayout';

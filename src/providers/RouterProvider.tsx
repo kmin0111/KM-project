@@ -6,6 +6,7 @@ import { AboutPage } from '@/pages/AboutPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { SignupPage } from '@/pages/signup';
 import { ReviewListPage, ReviewDetailPage, ReviewWritePage } from '@/pages/reviews';
+import { MypagePage, MypageEditPage, ChangePasswordPage } from '@/pages/mypage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { ROUTES } from '@/constants/routes';
 import { useAuthStore } from '@/stores/authStore';
@@ -54,6 +55,30 @@ export function RouterProvider() {
             }
           />
           <Route path={ROUTES.REVIEWS_DETAIL} element={<ReviewDetailPage />} />
+          <Route
+            path={ROUTES.MYPAGE}
+            element={
+              <RequireAuth>
+                <MypagePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={ROUTES.MYPAGE_EDIT}
+            element={
+              <RequireAuth>
+                <MypageEditPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={ROUTES.MYPAGE_CHANGE_PASSWORD}
+            element={
+              <RequireAuth>
+                <ChangePasswordPage />
+              </RequireAuth>
+            }
+          />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />

@@ -25,6 +25,9 @@ interface PersistedShape {
   ownerReplies: Record<number, OwnerReply>;
   nextReviewId: number;
   nextReplyId: number;
+  nicknames?: Record<number, string>;
+  passwords?: Record<number, string>;
+  withdrawnIds?: number[];
 }
 
 /**
@@ -100,6 +103,20 @@ const ownerReplies = new Map<number, OwnerReply>(
 let nextReviewId = persisted?.nextReviewId ?? INITIAL_NEXT_REVIEW_ID;
 let nextReplyId = persisted?.nextReplyId ?? INITIAL_NEXT_REPLY_ID;
 
+const nicknames = new Map<number, string>(
+  persisted?.nicknames
+    ? Object.entries(persisted.nicknames).map(([k, v]) => [Number(k), v])
+    : [],
+);
+
+const passwords = new Map<number, string>(
+  persisted?.passwords
+    ? Object.entries(persisted.passwords).map(([k, v]) => [Number(k), v])
+    : [],
+);
+
+const withdrawnIds = new Set<number>(persisted?.withdrawnIds ?? []);
+
 function persist() {
   writePersisted({
     createdReviews,
@@ -108,6 +125,9 @@ function persist() {
     ownerReplies: Object.fromEntries(ownerReplies),
     nextReviewId,
     nextReplyId,
+    nicknames: Object.fromEntries(nicknames),
+    passwords: Object.fromEntries(passwords),
+    withdrawnIds: Array.from(withdrawnIds),
   });
 }
 
@@ -164,6 +184,33 @@ export const mockReviewStore = {
   },
   deleteReply(id: number) {
     ownerReplies.delete(id);
+    persist();
+  },
+
+  // ===== nicknames (mypage profile updates) =====
+  getNickname(userId: number): string | undefined {
+    return nicknames.get(userId);
+  },
+  updateNickname(userId: number, nickname: string) {
+    nicknames.set(userId, nickname);
+    persist();
+  },
+
+  // ===== passwords (mypage change-password) =====
+  getPassword(userId: number): string | undefined {
+    return passwords.get(userId);
+  },
+  setPassword(userId: number, pw: string) {
+    passwords.set(userId, pw);
+    persist();
+  },
+
+  // ===== withdrawn (mypage withdraw) =====
+  isWithdrawn(userId: number): boolean {
+    return withdrawnIds.has(userId);
+  },
+  withdraw(userId: number) {
+    withdrawnIds.add(userId);
     persist();
   },
 
