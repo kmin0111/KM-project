@@ -79,11 +79,17 @@ export const reviewListHandlers = [
     const start = (currentPage - 1) * size;
     const content = filtered.slice(start, start + size);
 
+    const averageRating =
+      totalCount === 0
+        ? 0
+        : Math.round((filtered.reduce((sum, r) => sum + r.rating, 0) / totalCount) * 10) / 10;
+
     const response: ReviewListResponse = {
       content,
       totalCount,
       totalPages,
       currentPage,
+      averageRating,
     };
 
     return HttpResponse.json(response);

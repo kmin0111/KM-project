@@ -1,35 +1,11 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
 import { Stars } from '@/components';
-
-const REVIEWS = [
-  {
-    id: 1,
-    type: '정기청소',
-    rating: 5,
-    preview: '꼼꼼하게 잘 해주셔서 집이 정말 깨끗해졌어요. 다음에도 꼭 이용할게요!',
-    author: '김00',
-    count: 3,
-  },
-  {
-    id: 2,
-    type: '입주청소',
-    rating: 4,
-    preview: '새 집처럼 깨끗하게 청소해주셨어요. 세세한 부분까지 신경 써주셔서 만족합니다.',
-    author: '박00',
-    count: 1,
-  },
-  {
-    id: 3,
-    type: '특수청소',
-    rating: 5,
-    preview: '냄새 제거와 전반적인 청소 모두 완벽했습니다. 가격 대비 너무 만족스럽네요.',
-    author: '이00',
-    count: 5,
-  },
-];
+import { useReviewList } from '@/features/reviews/list';
 
 export function ReviewSection() {
+  const { data, isLoading } = useReviewList({ page: 1, size: 3, sort: 'latest' });
+
   return (
     <section className="py-[60px] px-6 bg-bg-base">
       <div className="max-w-container mx-auto">
@@ -44,30 +20,44 @@ export function ReviewSection() {
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-5">
-          {REVIEWS.map((review) => (
-            <Link
-              key={review.id}
-              to={`${ROUTES.REVIEWS}/${review.id}`}
-              className="border border-border-base rounded-xl p-5 flex flex-col gap-2 no-underline hover:shadow-md transition-shadow"
-            >
-              <span className="text-[13px] font-semibold text-primary">
-                [{review.type}]
-              </span>
-              <Stars rating={review.rating} />
-              <p className="text-[13px] text-text-body leading-relaxed m-0 line-clamp-2">
-                {review.preview}
-              </p>
-              <p className="text-xs text-text-muted m-0 mt-auto">
-                {review.author} · {review.count}회이용
-              </p>
-            </Link>
-          ))}
+          {isLoading
+            ? Array.from({ length: 3 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="border border-border-base rounded-xl p-5 flex flex-col gap-2 animate-pulse"
+                >
+                  <div className="h-4 w-16 bg-bg-muted rounded" />
+                  <div className="h-4 w-24 bg-bg-muted rounded" />
+                  <div className="h-10 w-full bg-bg-muted rounded" />
+                  <div className="h-3 w-20 bg-bg-muted rounded mt-auto" />
+                </div>
+              ))
+            : data?.content.map((review) => (
+                <Link
+                  key={review.id}
+                  to={`${ROUTES.REVIEWS}/${review.id}`}
+                  className="border border-border-base rounded-xl p-5 flex flex-col gap-2 no-underline hover:shadow-md transition-shadow"
+                >
+                  <span className="text-[13px] font-semibold text-primary">
+                    [{review.type}]
+                  </span>
+                  <Stars rating={review.rating} />
+                  <p className="text-[13px] text-text-body leading-relaxed m-0 line-clamp-2">
+                    {review.content}
+                  </p>
+                  <p className="text-xs text-text-muted m-0 mt-auto">
+                    {review.author} · {review.useCount}회이용
+                  </p>
+                </Link>
+              ))}
         </div>
 
         <div className="border border-border-base rounded-lg p-4 text-center text-[15px] text-gray-600">
           전체 평균 &nbsp;•&nbsp;{' '}
-          <strong className="text-lg text-text-heading">4.8</strong>
-          &nbsp; (30건)
+          <strong className="text-lg text-text-heading">
+            {isLoading ? '-' : (data?.averageRating ?? 0).toFixed(1)}
+          </strong>
+          &nbsp;({isLoading ? '-' : data?.totalCount ?? 0}건)
         </div>
       </div>
     </section>

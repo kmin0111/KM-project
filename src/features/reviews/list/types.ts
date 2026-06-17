@@ -24,4 +24,5 @@ export interface ReviewListResponse {
   totalCount: number;
   totalPages: number;
   currentPage: number;
+  averageRating: number;
 }

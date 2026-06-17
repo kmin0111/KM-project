@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { DefaultLayout } from '@/layouts/DefaultLayout';
 import { AuthLayout } from '@/layouts/AuthLayout';
 import { MainPage } from '@/pages/MainPage';
+import { AboutPage } from '@/pages/AboutPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { SignupPage } from '@/pages/signup';
 import { ReviewListPage, ReviewDetailPage, ReviewWritePage } from '@/pages/reviews';
@@ -34,6 +35,7 @@ export function RouterProvider() {
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path={ROUTES.HOME} element={<MainPage />} />
+          <Route path={ROUTES.ABOUT} element={<AboutPage />} />
           <Route path={ROUTES.REVIEWS} element={<ReviewListPage />} />
           <Route
             path={ROUTES.REVIEWS_WRITE}
