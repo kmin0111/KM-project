@@ -49,7 +49,7 @@ function ReviewListSkeleton() {
 export function MypagePage() {
   const navigate = useNavigate();
   const userId = useAuthStore((s) => s.user?.id);
-  const { data: profile, isLoading, isError, refetch } = useMyProfile();
+const { data: profile, isLoading, isError, refetch } = useMyProfile();
   const {
     data: reviewData,
     isLoading: isReviewLoading,
@@ -61,6 +61,9 @@ export function MypagePage() {
   });
 
   const reviews = reviewData?.content ?? [];
+
+  // 💡 [추가] 내 프로필 정보의 role이 'OWNER'인지 확인하는 기준을 만듭니다.
+  const isOwner = profile?.role === 'OWNER';
 
   return (
     <MypageLayout>
@@ -118,50 +121,53 @@ export function MypagePage() {
           </section>
         )}
 
-        <section className="border border-border-base rounded-xl p-6 bg-bg-base flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-text-heading m-0">나의 후기</h2>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => navigate(ROUTES.REVIEWS_WRITE)}
-                className="border border-border-base text-text-body hover:bg-bg-muted rounded-lg px-3 py-1.5 text-sm transition-colors"
-              >
-                후기 작성하기
-              </button>
+{/* 💡 오너가 아닐 때만(일반 회원일 때만) '나의 후기' 섹션을 렌더링합니다! */}
+        {!isOwner && (
+          <section className="border border-border-base rounded-xl p-6 bg-bg-base flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-text-heading m-0">나의 후기</h2>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => navigate(ROUTES.REVIEWS_WRITE)}
+                  className="border border-border-base text-text-body hover:bg-bg-muted rounded-lg px-3 py-1.5 text-sm transition-colors"
+                >
+                  후기 작성하기
+                </button>
+              </div>
             </div>
-          </div>
 
-          {isReviewLoading ? (
-            <ReviewListSkeleton />
-          ) : reviews.length === 0 ? (
-            <p className="text-sm text-text-muted m-0">
-              작성하신 후기를 한눈에 확인할 수 있어요. 새로운 청소 경험을 공유해보세요!
-            </p>
-          ) : (
-            <ul className="flex flex-col gap-3 list-none p-0 m-0">
-              {reviews.map((review) => (
-                <li key={review.id}>
-                  <Link
-                    to={`${ROUTES.REVIEWS}/${review.id}`}
-                    className="border border-border-base rounded-lg p-4 flex flex-col gap-2 hover:shadow-sm transition-shadow no-underline bg-bg-base"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[13px] font-semibold text-primary">
-                        [{review.type}]
-                      </span>
-                      <Stars rating={review.rating} />
-                    </div>
-                    <p className="text-sm text-text-body leading-relaxed m-0 line-clamp-2">
-                      {review.content}
-                    </p>
-                    <span className="text-xs text-text-muted">{review.createdAt}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+            {isReviewLoading ? (
+              <ReviewListSkeleton />
+            ) : reviews.length === 0 ? (
+              <p className="text-sm text-text-muted m-0">
+                작성하신 후기를 한눈에 확인할 수 있어요. 새로운 청소 경험을 공유해보세요!
+              </p>
+            ) : (
+              <ul className="flex flex-col gap-3 list-none p-0 m-0">
+                {reviews.map((review) => (
+                  <li key={review.id}>
+                    <Link
+                      to={`${ROUTES.REVIEWS}/${review.id}`}
+                      className="border border-border-base rounded-lg p-4 flex flex-col gap-2 hover:shadow-sm transition-shadow no-underline bg-bg-base"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[13px] font-semibold text-primary">
+                          [{review.type}]
+                        </span>
+                        <Stars rating={review.rating} />
+                      </div>
+                      <p className="text-sm text-text-body leading-relaxed m-0 line-clamp-2">
+                        {review.content}
+                      </p>
+                      <span className="text-xs text-text-muted">{review.createdAt}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
       </div>
     </MypageLayout>
   );

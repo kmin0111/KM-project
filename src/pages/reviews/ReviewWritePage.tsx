@@ -113,10 +113,17 @@ export function ReviewWritePage() {
         content.trim().length < MIN_CONTENT_LENGTH
           ? `후기 내용은 ${MIN_CONTENT_LENGTH}자 이상 작성해주세요.`
           : null,
+      // 🌟 아래 2줄을 새로 추가하여 사진 유효성 검사를 진행합니다!
+      photos:
+        beforePhotos.length === 0 || afterPhotos.length === 0
+          ? '전 사진과 후 사진을 각각 최소 1장 이상 등록해주세요.'
+          : null,
     };
-  }, [type, breakdown, content]);
+  // 🌟 의존성 배열에 beforePhotos와 afterPhotos도 꼭 같이 넣어주세요!
+  }, [type, breakdown, content, beforePhotos, afterPhotos]);
 
-  const hasError = !!(errors.type || errors.breakdown || errors.content);
+  // 🌟 errors.photos 도 체크하도록 수정 완료!
+  const hasError = !!(errors.type || errors.breakdown || errors.content || errors.photos);
 
   // 비로그인 시 렌더 단에서 로그인 페이지로 리다이렉트.
   // (라우터 가드인 RequireAuth와 이중 안전망 역할 — 모든 훅 호출 이후)
@@ -459,7 +466,7 @@ export function ReviewWritePage() {
           </button>
           <button
             type="submit"
-            disabled={isPending}
+            disabled={isPending || hasError}
             className="bg-primary text-text-inverse hover:bg-primary-700 rounded-lg px-6 py-2.5 text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isPending

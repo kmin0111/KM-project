@@ -82,17 +82,17 @@ export function AboutPage() {
   return (
     <>
       {/* 1. 히어로 섹션 */}
-      <section className="bg-primary py-20 px-6">
+      <section className="bg-bg-muted py-20 px-6">
         <div className="max-w-container mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-text-inverse m-0 mb-4 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-text-heading m-0 mb-4 leading-tight">
             전문가의 손길로, 깨끗한 공간을 경험하세요
           </h1>
-          <p className="text-base md:text-lg text-text-inverse/90 mb-8">
+          <p className="text-base md:text-lg text-text-body mb-8">
             클린하우스는 정기청소·입주청소·특수청소 전문 서비스입니다
           </p>
           <Link
             to={ROUTES.REVIEWS}
-            className="inline-block bg-text-inverse text-primary no-underline px-8 py-3.5 rounded-lg text-base font-semibold hover:bg-bg-muted transition-colors"
+            className="inline-block bg-primary text-text-inverse no-underline px-8 py-3.5 rounded-lg text-base font-semibold hover:bg-primary-700 transition-colors"
           >
             고객 후기 보기
           </Link>

@@ -29,8 +29,14 @@ function getPageRange(current: number, total: number): (number | '...')[] {
 }
 
 export function ReviewListPage() {
-  const navigate = useNavigate();
+const navigate = useNavigate();
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  // 💡 [추가] 로그인한 유저의 정보를 가져옵니다. (보통 s.user 안에 들어있습니다)
+  const user = useAuthStore((s) => s.user); 
+  
+  // 💡 오너인지 판단하는 기준을 만듭니다. 
+  // (만약 오너를 판단하는 값이 'OWNER'가 아니라 'owner'나 '사장님'이라면 그에 맞게 적어주세요!)
+  const isOwner = isLoggedIn && user?.role === 'OWNER';
 
   const [filter, setFilter] = useState<ReviewFilterType>('전체');
   const [sort, setSort] = useState<ReviewSort>('latest');
@@ -92,13 +98,16 @@ export function ReviewListPage() {
             <option value="latest">최신순</option>
             <option value="rating">별점순</option>
           </select>
-          <button
-            type="button"
-            onClick={handleWriteClick}
-            className="bg-primary text-text-inverse rounded-lg px-4 py-2 text-sm font-semibold hover:bg-primary-700 transition-colors"
-          >
-            후기 작성
-          </button>
+{/* 💡 오너가 아닐 때만 후기 작성 버튼을 보여줍니다! */}
+          {!isOwner && (
+            <button
+              type="button"
+              onClick={handleWriteClick}
+              className="bg-primary text-text-inverse rounded-lg px-4 py-2 text-sm font-semibold hover:bg-primary-700 transition-colors"
+            >
+              후기 작성
+            </button>
+          )}
         </div>
       </div>
 
