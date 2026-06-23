@@ -122,12 +122,6 @@ export function MypagePage() {
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold text-text-heading m-0">나의 후기</h2>
             <div className="flex items-center gap-2">
-              <Link
-                to={ROUTES.REVIEWS}
-                className="text-sm text-text-muted hover:text-primary transition-colors no-underline"
-              >
-                더보기
-              </Link>
               <button
                 type="button"
                 onClick={() => navigate(ROUTES.REVIEWS_WRITE)}
